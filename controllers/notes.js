@@ -5,7 +5,7 @@ function create(req, res) {
   Note.create(req.body)
   .then(note => {
     Note.findById(note._id)
-    .populate('owner')
+    .populate('note')
     .then(populatedNote => {
       res.json(populatedNote)
     })
@@ -16,6 +16,19 @@ function create(req, res) {
   })
 }
 
+function index(req, res) {
+  Note.find({})
+  .populate('note')
+  .then(notes => {
+    res.json(notes)
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({err: err.errmsg})
+  })
+}
+
 export{
-  create
+  create,
+  index,
 }
